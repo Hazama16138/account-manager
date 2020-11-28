@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\KindController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/test', TestController::class);
+// Route::resource('/test', TestController::class);
+
+Route::resource('/kind', KindController::class);
+
+// Route:get('/kind', KindController@index);
