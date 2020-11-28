@@ -1,0 +1,24 @@
+.header-logo {
+    display: block;
+    height: 70px;
+    width: 70px;
+}
+
+.header-logo img {
+    height: autho;
+    width: 100%;
+}
+
+.breadcrumb .active {
+    color: #6c757d;
+}
+
+.side-menu .active {
+    background-color: #007bff;
+    display: block;
+    color: #fff;
+}
+
+.side-menu .active:hover {
+    opacity: 0.8;
+}
