@@ -14,8 +14,15 @@ class KindController extends Controller
      */
     public function index()
     {
-        $items = DB::select('select * from kind');
-        return view('kind.index', ['items' => $items]);
+        $breadcrumb = [
+            [
+                'name' => config('consts.kind.KIND_NAME'),
+                'href' => config('consts.kind.KIND_PATH')
+            ],
+        ];
+        return view('kind.index', [
+            'breadcrumb' => $breadcrumb
+        ]);
     }
 
     /**

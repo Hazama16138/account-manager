@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
-@section('title', '種類')
-
 @php
 $url = "/".request()->path();
-$array = [
-    ['name' => 'kind', 'href' => '/kind'],
-    ['name' => 'sample', 'href' => '#'],
-    ['name' => 'test', 'href' => '#'],
-];
 @endphp
+
+@foreach ($breadcrumb as $value)
+@if($value['href'] == $url)
+@section('title', $value['name'])
+@endif
+@endforeach
