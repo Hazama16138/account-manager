@@ -20,8 +20,10 @@ class KindController extends Controller
                 'href' => config('consts.kind.KIND_PATH')
             ],
         ];
+        $items = DB::select('SELECT * FROM kind');
         return view('kind.index', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'items' => $items
         ]);
     }
 
@@ -32,7 +34,19 @@ class KindController extends Controller
      */
     public function create()
     {
-        //
+        $breadcrumb = [
+            [
+                'name' => config('consts.kind.KIND_NAME'),
+                'href' => config('consts.kind.KIND_PATH')
+            ],
+            [
+                'name' => '新規登録',
+                'href' => '/kind/create'
+            ],
+        ];
+        return view('kind.create', [
+            'breadcrumb' => $breadcrumb,
+        ]);
     }
 
     /**
@@ -43,7 +57,12 @@ class KindController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $param = [
+            'name' => $request->name,
+            'kana' => $request->kana
+        ];
+        DB::table('kind')->insert($param);
+        return redirect('/kind/create');
     }
 
     /**
@@ -65,7 +84,24 @@ class KindController extends Controller
      */
     public function edit($id)
     {
-        //
+        $breadcrumb = [
+            [
+                'name' => config('consts.kind.KIND_NAME'),
+                'href' => config('consts.kind.KIND_PATH')
+            ],
+            [
+                'name' => '編集',
+                'href' => '/kind/edit'
+            ],
+        ];
+        $data = DB::table('kind')->where('kind_id', $id)->first();
+        foreach ($data as $key => $value) {
+            $items[$key] = $value;
+        }
+        return view('kind.edit', [
+            'breadcrumb' => $breadcrumb,
+            'item'         => $items,
+        ]);
     }
 
     /**
