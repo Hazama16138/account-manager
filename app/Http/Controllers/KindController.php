@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class KindController extends Controller
 {
+    public function callAction($method, $parameters)
+    {
+        return parent::callAction($method, array_values($parameters));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -57,12 +62,18 @@ class KindController extends Controller
      */
     public function store(Request $request)
     {
+        // バリデーション
+        $validate_rule = [
+            'name' => 'required | max:20',
+            'kana' => 'required | max:50',
+        ];
+        $this->validate($request, $validate_rule);
         $param = [
             'name' => $request->name,
             'kana' => $request->kana
         ];
         DB::table('kind')->insert($param);
-        return redirect('/kind/create');
+        return redirect('/kind');
     }
 
     /**
@@ -73,7 +84,25 @@ class KindController extends Controller
      */
     public function show($id)
     {
-        //
+        $breadcrumb = [
+            [
+                'name' => config('consts.kind.KIND_NAME'),
+                'href' => config('consts.kind.KIND_PATH')
+            ],
+            [
+                'name' => '削除',
+                'href' => '/kind/show/' . $id
+            ],
+        ];
+
+        $data = DB::table('kind')
+            ->where('kind_id', $id)
+            ->first();
+
+        return view('kind.delete', [
+            'breadcrumb' => $breadcrumb,
+            'data'       => $data,
+        ]);
     }
 
     /**
@@ -95,12 +124,9 @@ class KindController extends Controller
             ],
         ];
         $data = DB::table('kind')->where('kind_id', $id)->first();
-        foreach ($data as $key => $value) {
-            $items[$key] = $value;
-        }
         return view('kind.edit', [
             'breadcrumb' => $breadcrumb,
-            'item'         => $items,
+            'data'       => $data,
         ]);
     }
 
@@ -113,7 +139,23 @@ class KindController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // バリデーション
+        $validate_rule = [
+            'name' => 'required | max:20',
+            'kana' => 'required | max:50',
+        ];
+        $this->validate($request, $validate_rule);
+
+        $param = [
+            'name'        => $request->name,
+            'kana'        => $request->kana,
+            'update_date' => date('Y-m-d H:i:s'),
+        ];
+        DB::table('kind')
+            ->where('kind_id', $id)
+            ->update($param);
+
+        return redirect('/kind');
     }
 
     /**
@@ -124,6 +166,10 @@ class KindController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('kind')
+            ->where('kind_id', $id)
+            ->delete();
+
+        return redirect('/kind');
     }
 }

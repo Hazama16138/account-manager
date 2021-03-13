@@ -11,7 +11,7 @@ $url = "/".request()->path();
 @endforeach
 
 @section('content')
-<form method="POST" action="/kind/{{$data->kind_id}}">
+<form method="POST" action="/category/{{$data->category_id}}">
 	@method('PUT')
 	@csrf
 	<table class="table">
@@ -25,10 +25,10 @@ $url = "/".request()->path();
 			</td>
 		</tr>
 		<tr>
-			<th scope="row">Kana</th>
+			<th scope="row">Category</th>
 			<td>
-				<input type="text" name="kana" class="form-control @error('kana') is-invalid @enderror" maxlength="50" tabindex="2" placeholder="最大50文字" value="{{$data->kana}}">
-				@error('kana')
+				<input type="text" name="kana" class="form-control @error('kana') is-invalid @enderror" tabindex="2" value="{{$data->category_id}}">
+				@error('category_id')
 				<span class="invalid-feedback">{{ $message }}</span>
 				@enderror
 			</td>

@@ -17,7 +17,7 @@ class CreateCategoryTable extends Migration
             $table->increments('category_id');
             $table->string('name', 40);
             $table->unsignedInteger('parent_id')->default(0);
-            $table->foreign('parent_id')->references('category_id')->on('category');
+            // $table->foreign('parent_id')->references('category_id')->on('category');
             $table->timestamp('create_date')->useCurrent();
             $table->timestamp('update_date')->useCurrent();
             $table->timestamp('delete_date')->useCurrent();
