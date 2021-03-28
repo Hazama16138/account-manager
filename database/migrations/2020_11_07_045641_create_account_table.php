@@ -15,23 +15,19 @@ class CreateAccountTable extends Migration
     {
         Schema::create('account', function (Blueprint $table) {
             $table->unsignedInteger('customer_id');
-            $table->foreign('customer_id')->references('customer_id')->on('customer');
-            $table->integer('account_id');
+            // $table->foreign('customer_id')->references('customer_id')->on('customer');
+            $table->unsignedInteger('account_id');
             $table->text('url');
             $table->string('login_id', 256);
             $table->string('password', 256);
             $table->unsignedInteger('kind_id');
-            $table->foreign('kind_id')->references('kind_id')->on('kind');
+            // $table->foreign('kind_id')->references('kind_id')->on('kind');
             $table->text('note');
             $table->timestamp('create_date')->useCurrent();
             $table->timestamp('update_date')->useCurrent();
             $table->timestamp('delete_date')->useCurrent();
 
-            $table->primary(['customer_id', 'account_id']);
-        });
-
-        Schema::table('account', function (Blueprint $table) {
-            $table->increments('account_id')->change();
+            $table->primary(['account_id']);
         });
     }
 
@@ -43,6 +39,5 @@ class CreateAccountTable extends Migration
     public function down()
     {
         Schema::dropIfExists('account');
-        Schema::disableForeignKeyConstraints();
     }
 }

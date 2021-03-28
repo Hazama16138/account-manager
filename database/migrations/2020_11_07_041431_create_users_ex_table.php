@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTable extends Migration
+class CreateUsersExTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->increments('user_id');
-            $table->string('name', 40);
+        Schema::create('users_ex', function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
             $table->text('image')->nullable(true);
             $table->unsignedTinyInteger('auth')->default(1);
             $table->timestamp('create_date')->useCurrent();
             $table->timestamp('update_date')->useCurrent();
+
+            $table->primary('user_id');
         });
     }
 
@@ -30,7 +31,7 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
-        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('users_ex');
+        // Schema::disableForeignKeyConstraints();
     }
 }

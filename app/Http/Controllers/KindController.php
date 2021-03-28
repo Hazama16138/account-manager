@@ -25,7 +25,7 @@ class KindController extends Controller
                 'href' => config('consts.kind.KIND_PATH')
             ],
         ];
-        $items = DB::select('SELECT * FROM kind');
+        $items = DB::table('kind')->paginate(5);
         return view('kind.index', [
             'breadcrumb' => $breadcrumb,
             'items' => $items

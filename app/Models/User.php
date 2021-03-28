@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\UserEx;
 
 class User extends Authenticatable
 {
@@ -40,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //primaryKeyの変更
+    protected $primaryKey = "id";
+
+    public function scopeGetUsersEx()
+    {
+        return $this->join('users_ex', 'users.id', '=', 'users_ex.user_id');
+    }
 }

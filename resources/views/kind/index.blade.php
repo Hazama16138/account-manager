@@ -41,4 +41,5 @@ $test = ['id' => '1'];
 		@endforeach
 	</tbody>
 </table>
+<div class="text-center">{{$items->onEachSide(5)->links()}}</div>
 @endsection
