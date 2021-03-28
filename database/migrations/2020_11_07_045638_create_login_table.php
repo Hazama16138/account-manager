@@ -15,7 +15,6 @@ class CreateLoginTable extends Migration
     {
         Schema::create('login', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('user');
             $table->string('mail', 128);
             $table->string('password', 256);
             $table->timestamp('create_date')->useCurrent();

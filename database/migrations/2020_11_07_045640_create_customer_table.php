@@ -18,9 +18,7 @@ class CreateCustomerTable extends Migration
             $table->string('name', 40);
             $table->string('kana', 100);
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('user');
             $table->unsignedInteger('category_id');
-            $table->foreign('category_id')->references('category_id')->on('category');
             $table->timestamp('create_date')->useCurrent();
             $table->timestamp('update_date')->useCurrent();
             $table->timestamp('delete_date')->useCurrent();
@@ -35,6 +33,5 @@ class CreateCustomerTable extends Migration
     public function down()
     {
         Schema::dropIfExists('customer');
-        Schema::disableForeignKeyConstraints();
     }
 }

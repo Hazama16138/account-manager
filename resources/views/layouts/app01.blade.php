@@ -59,7 +59,6 @@
 		</div>
 		<footer class="row">
 			<div class="col text-center">
-				フッター
 			</div>
 		</footer>
 	</div>

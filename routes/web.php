@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\KindController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 
 /*
@@ -22,16 +23,14 @@ Route::get('/', function () {
 
 // Route::resource('/test', TestController::class);
 
-Route::resource('/kind', KindController::class);
-Route::resource('/category', CategoryController::class);
+Route::resource('/kind', KindController::class)->middleware('auth');
+Route::resource('/user', UserController::class, [
+    'only' => ['index', 'edit', 'update']
+])->middleware('auth');
 
 // Route:get('/kind', KindController@index);
 
 // Route::get('hello', 'KindController@');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
