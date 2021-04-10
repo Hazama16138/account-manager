@@ -11,9 +11,9 @@ $url = "/".request()->path();
 @endforeach
 
 @section('content')
-<form method="POST" action="/user/{{$data->id}}" enctype="multipart/form-data">
-	@method('PUT')
+<form method="POST" action="/user" enctype="multipart/form-data">
 	@csrf
+	<input type="hidden" name="user_id" value="{{ $data->id }}">
 	<table class="table">
 		<tr>
 			<th scope="row">Name</th>
@@ -53,7 +53,7 @@ $url = "/".request()->path();
 			</td>
 		</tr>
 	</table>
-	<input type="submit" value="編集" tabindex="3" class="btn btn-primary">
+	<input type="submit" value="登録" tabindex="3" class="btn btn-primary">
 	<a href="/user" class="btn btn-secondary">戻る</a>
 </form>
 @endsection

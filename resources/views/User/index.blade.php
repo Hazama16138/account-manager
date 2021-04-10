@@ -29,7 +29,11 @@ $test = ['id' => '1'];
 		<tr>
 			<td class="align-middle">{{ $item->id }}</a></td>
 			<td class="align-middle">
-				<a href="/user/{{$item->id}}/edit">{{ $item->name }}</a>
+				@if ($item->user_id)
+					<a href="{{ route('user.edit', $item->id)}}">{{ $item->name }}</a>
+				@else
+					<a href="{{ route('user.create', ['id' => $item->id])}}">{{ $item->name }}</a>
+				@endif
 			</td>
 			<td class="align-middle">
 				{{ $item->email }}

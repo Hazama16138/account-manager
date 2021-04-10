@@ -14,7 +14,7 @@ class CreateUsersExTable extends Migration
     public function up()
     {
         Schema::create('users_ex', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('image')->nullable(true);
             $table->unsignedTinyInteger('auth')->default(1);
             $table->timestamp('create_date')->useCurrent();

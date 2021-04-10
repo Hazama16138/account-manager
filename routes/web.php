@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::resource('/kind', KindController::class)->middleware('auth');
 Route::resource('/user', UserController::class, [
-    'only' => ['index', 'edit', 'update']
+    'only' => ['index', 'edit', 'update', 'store', 'create']
 ])->middleware('auth');
 
 // Route:get('/kind', KindController@index);

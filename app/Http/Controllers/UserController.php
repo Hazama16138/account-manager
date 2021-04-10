@@ -8,6 +8,13 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    private $current_id;
+
+    public function callAction($method, $parameters)
+    {
+        return parent::callAction($method, array_values($parameters));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +28,8 @@ class UserController extends Controller
                 'href' => config('consts.user.KIND_PATH')
             ],
         ];
-        $items = User::getUsersEx()->paginate(1);
+        $items = User::getUsersEx()->paginate(3);
+
         return view('user.index', [
             'breadcrumb' => $breadcrumb,
             'items' => $items
@@ -35,8 +43,26 @@ class UserController extends Controller
      */
     public function create()
     {
-        var_dump('hello');
-        exit;
+        $breadcrumb = [
+            [
+                'name' => config('consts.user.KIND_NAME'),
+                'href' => config('consts.user.KIND_PATH')
+            ],
+            [
+                'name' => '新規',
+                'href' => '/kind/create'
+            ],
+        ];
+        $this->current_id = $_GET['id'];
+        $data = DB::table('users')
+            ->leftjoin('users_ex', 'users.id', '=', 'users_ex.user_id')
+            ->where('users.id', $this->current_id)
+            ->first();
+
+        return view('user.create', [
+            'breadcrumb' => $breadcrumb,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -47,7 +73,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // バリデーション
+        $validate_rule = [
+            'user_id' => 'required',
+            'auth' => 'required | max:1 | max:99',
+        ];
+        $this->validate($request, $validate_rule);
+
+        // プロフィール画像の有無で処理を分岐する
+        if ($request->image) {
+            $path = $request->file('image')->store('public/users');
+            $image_path = basename($path);
+        } else {
+            $image_path = "";
+        }
+
+        // 追加する値をまとめる
+        $param = [
+            'user_id' => $request->user_id,
+            'image'   => $image_path,
+            'auth'    => $request->auth,
+        ];
+
+        // 登録処理を実行する
+        DB::table('users_ex')->insert($param);
+
+        return redirect('/user');
     }
 
     /**
@@ -69,7 +120,27 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $breadcrumb = [
+            [
+                'name' => config('consts.user.KIND_NAME'),
+                'href' => config('consts.user.KIND_PATH')
+            ],
+            [
+                'name' => '編集',
+                'href' => '/kind/edit'
+            ],
+        ];
+        $this->current_id = $id;
+
+        $data = DB::table('users')
+            ->leftjoin('users_ex', 'users.id', '=', 'users_ex.user_id')
+            ->where('users.id', $id)
+            ->first();
+
+        return view('user.edit', [
+            'breadcrumb' => $breadcrumb,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -81,7 +152,32 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // バリデーション
+        $validate_rule = [
+            'auth' => 'required | max:1 | max:99',
+        ];
+        $this->validate($request, $validate_rule);
+
+        // プロフィール画像の有無で処理を分岐する
+        if (!empty($request->image)) {
+            $path = $request->file('image')->store('public/users');
+            $image_path = basename($path);
+        } else {
+            $image_path = "";
+        }
+
+        // 追加する値をまとめる
+        $param = [
+            'image'   => $image_path,
+            'auth'    => $request->auth,
+        ];
+
+        // 更新処理を実行する
+        DB::table('users_ex')
+            ->where('user_id', $id)
+            ->update($param);
+
+        return redirect('/user');
     }
 
     /**

@@ -47,6 +47,6 @@ class User extends Authenticatable
 
     public function scopeGetUsersEx()
     {
-        return $this->join('users_ex', 'users.id', '=', 'users_ex.user_id');
+        return $this->leftjoin('users_ex', 'users.id', '=', 'users_ex.user_id');
     }
 }
