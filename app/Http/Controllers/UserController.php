@@ -109,7 +109,26 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $breadcrumb = [
+            [
+                'name' => config('consts.user.KIND_NAME'),
+                'href' => config('consts.user.KIND_PATH')
+            ],
+            [
+                'name' => '削除',
+                'href' => '/user/show/' . $id
+            ],
+        ];
+
+        $data = DB::table('users')
+            ->leftjoin('users_ex', 'users.id', '=', 'users_ex.user_id')
+            ->where('users.id', $id)
+            ->first();
+
+        return view('user.delete', [
+            'breadcrumb' => $breadcrumb,
+            'data'       => $data,
+        ]);
     }
 
     /**
@@ -188,6 +207,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::transaction(function () use ($id) {
+            // ユーザーを削除
+            DB::table('users')
+                ->where('id', $id)
+                ->delete();
+
+            // ユーザー情報を削除
+            DB::table('users_ex')
+                ->where('user_id', $id)
+                ->delete();
+        }, 3);
+
+        return redirect('/user');
     }
 }

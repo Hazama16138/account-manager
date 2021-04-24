@@ -30,6 +30,15 @@ $url = "/".request()->path();
 				@error('image')
 				<span class="invalid-feedback">{{ $message }}</span>
 				@enderror
+				@if ($data->image)
+					<div class="mt-4 text-center">
+						<img src="/storage/users/{{ $data->image }}" width="300" height="300">
+					</div>
+				@else
+					<div class="mt-4 text-center">
+						<img src="/img/no-image.png" width="300" height="300">
+					</div>
+				@endif
 			</td>
 		</tr>
 		<tr>

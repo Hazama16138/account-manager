@@ -22,6 +22,7 @@ $test = ['id' => '1'];
 			<th scope="col">Image</th>
 			<th scope="col">Create Date</th>
 			<th scope="col">Update Date</th>
+			<th scope="col"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -54,6 +55,9 @@ $test = ['id' => '1'];
 			</td>
 			<td class="align-middle">{{ $item->created_at }}</td>
 			<td class="align-middle">{{ $item->updated_at }}</td>
+			<td class="align-middle">
+				<a href="{{route('user.show', $item->id)}}" class="btn btn-danger h-25">削除</a>
+			</td>
 		</tr>
 		@endforeach
 	</tbody>
